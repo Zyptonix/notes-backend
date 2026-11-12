@@ -4,6 +4,14 @@
 // Run: npm run seed
 // ==============================================================================
 
+const dns = require('dns');
+// Set public DNS servers to resolve MongoDB Atlas SRV records reliably (fixes querySrv ECONNREFUSED)
+try {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+} catch (e) {
+  // Ignore if not permitted
+}
+
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const User = require('./models/User');
