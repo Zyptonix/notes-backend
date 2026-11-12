@@ -10,14 +10,23 @@ const mongoose = require('mongoose');
  * Mongoose automatically handles connection pooling and reconnect logic.
  */
 const connectDB = async () => {
-  try {
-    // Attempt connection with options
-    const conn = await mongoose.connect(process.env.MONGODB_URI);
+  const uri = process.env.MONGODB_URI;
 
+  if (!uri) {
+    console.error('\n❌ [MongoDB Error]: MONGODB_URI is not defined in your environment variables.');
+    console.error('👉 Please create a `.env` file inside the `backend/` directory with:');
+    console.error('   MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/note_taking_db\n');
+    process.exit(1);
+  }
+
+  try {
+    const conn = await mongoose.connect(uri);
     console.log(`[MongoDB Connected]: Host -> ${conn.connection.host}, Database -> ${conn.connection.name}`);
   } catch (error) {
-    console.error(`[MongoDB Connection Error]: ${error.message}`);
-    // Exit process with failure code (1) if database cannot be reached
+    console.error(`\n❌ [MongoDB Connection Error]: ${error.message}`);
+    console.error('👉 Please verify your connection string in backend/.env:');
+    console.error('   - For MongoDB Atlas: verify your username, password, and that IP 0.0.0.0/0 is whitelisted in Network Access.');
+    console.error('   - For local MongoDB: ensure your mongod service is started and listening on port 27017.\n');
     process.exit(1);
   }
 };

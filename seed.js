@@ -15,9 +15,18 @@ dotenv.config();
 
 const seedData = async () => {
   try {
+    // 1. Verify MONGODB_URI exists in environment
+    if (!process.env.MONGODB_URI) {
+      console.error('\n❌ [Seeding Error]: MONGODB_URI is not defined in your .env file.');
+      console.error('👉 Please create a `.env` file inside the `backend/` directory with your MongoDB connection string:');
+      console.error('   MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/note_taking_db');
+      console.error('   (or MONGODB_URI=mongodb://127.0.0.1:27017/note_taking_db for a local MongoDB server)\n');
+      process.exit(1);
+    }
+
     console.log('[Seeding]: Connecting to MongoDB...');
     await mongoose.connect(process.env.MONGODB_URI);
-    console.log('[Seeding]: Connected.');
+    console.log('[Seeding]: Connected successfully.');
 
     // 1. Clear existing collections
     console.log('[Seeding]: Clearing existing data...');
