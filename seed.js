@@ -5,11 +5,15 @@
 // ==============================================================================
 
 const dns = require('dns');
-// Set public DNS servers to resolve MongoDB Atlas SRV records reliably (fixes querySrv ECONNREFUSED)
-try {
-  dns.setServers(['8.8.8.8', '1.1.1.1']);
-} catch (e) {
-  // Ignore if not permitted
+
+// Only apply public DNS override on Windows local dev environments where ISP DNS fails.
+// In cloud/Linux environments (like Render), use the default cloud system resolver!
+if (process.platform === 'win32') {
+  try {
+    dns.setServers(['8.8.8.8', '1.1.1.1']);
+  } catch (e) {
+    // Ignore if not permitted
+  }
 }
 
 const mongoose = require('mongoose');

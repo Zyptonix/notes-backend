@@ -76,8 +76,8 @@ app.use(errorHandler);
 
 // 9. Start HTTP Server
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
-  console.log(`[Server Running]: http://localhost:${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`[Server Running]: Port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
 });
 
 // Handle unhandled Promise rejections gracefully
