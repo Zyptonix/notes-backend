@@ -19,9 +19,9 @@ connectDB();
 const app = express();
 
 // 4. Global Middlewares
-// Enable Cross-Origin Resource Sharing (CORS) for frontend clients
+// Enable Cross-Origin Resource Sharing (CORS) for all frontend clients (Vercel, localhost, etc.)
 app.use(cors({
-  origin: '*', // In production, can be restricted to frontend domain
+  origin: true, // Automatically reflects caller origin, resolving any mixed origin restrictions
   credentials: true,
 }));
 
